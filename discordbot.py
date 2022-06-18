@@ -9,6 +9,8 @@ import json
 import psycopg2
 
 tc = {}
+voice_list = {'元気': 2, 'ささやき': 19, 'セクシー': 17}
+voice_speaker = voice_list['ささやき']
 prefix = os.getenv('DISCORD_BOT_PREFIX', default='🦑')
 token = os.environ['DISCORD_BOT_TOKEN']
 voicevox_key = os.environ['VOICEVOX_KEY']
@@ -32,6 +34,16 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
     presence = f'{prefix}ヘルプ | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
     await client.change_presence(activity=discord.Game(name=presence))
+
+@client.command()
+async def mode(ctx, word):
+    if word in voice_list:
+        global voice_speaker
+        voice_speaker = voice_list[f'{word}']
+        await ctx.send(f'{word}モードになりました。')
+    else:
+        await ctx.send('ささやき、元気、セクシーのどれかを選択してね！')
+
 
 @client.command()
 async def s(ctx):
@@ -194,7 +206,7 @@ async def on_message(message):
                         else:
                             text += '、添付ファイル'
 
-                    mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voicevox_speaker}&intonationScale=1'
+                    mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voice_speaker}&intonationScale=1'
                     while message.guild.voice_client.is_playing():
                         await asyncio.sleep(0.5)
                     source = await discord.FFmpegOpusAudio.from_probe(mp3url)
@@ -213,7 +225,7 @@ async def on_voice_state_update(member, before, after):
             else:
                 if member.guild.voice_client.channel is after.channel:
                     text = member.name + 'さんが入室しました'
-                    mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voicevox_speaker}&intonationScale=1'
+                    mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voice_speaker}&intonationScale=1'
                     while member.guild.voice_client.is_playing():
                         await asyncio.sleep(0.5)
                     source = await discord.FFmpegOpusAudio.from_probe(mp3url)
@@ -230,7 +242,7 @@ async def on_voice_state_update(member, before, after):
                         await member.guild.voice_client.disconnect()
                     else:
                         text = member.name + 'さんが退室しました'
-                        mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voicevox_speaker}&intonationScale=1'
+                        mp3url = f'https://api.su-shiki.com/v2/voicevox/audio/?text={text}&key={voicevox_key}&speaker={voice_speaker}&intonationScale=1'
                         while member.guild.voice_client.is_playing():
                             await asyncio.sleep(0.5)
                         source = await discord.FFmpegOpusAudio.from_probe(mp3url)
