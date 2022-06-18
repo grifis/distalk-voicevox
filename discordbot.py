@@ -34,7 +34,7 @@ async def on_guild_remove(guild):
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.command()
-async def 接続(ctx):
+async def s(ctx):
     guild_id = ctx.guild.id
     tc_id = ctx.channel.id
     tc[guild_id] = tc_id
@@ -53,7 +53,7 @@ async def 接続(ctx):
                 await ctx.author.voice.channel.connect()
 
 @client.command()
-async def 切断(ctx):
+async def dc(ctx):
     guild_id = ctx.guild.id
     tc.pop(guild_id)
     if ctx.message.guild:
