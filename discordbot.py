@@ -9,7 +9,7 @@ import json
 import psycopg2
 
 tc = {}
-voice_list = {'元気': 2, 'ささやき': 19, 'セクシー': 17, 'ずんだもん': 3, '雨晴はう': 10, 'モチノキョウコ': 20}
+voice_list = {'元気': 2, 'ささやき': 19, '九州そら': 17, 'ずんだもん': 3, '雨晴はう': 10, 'モチノキョウコ': 20}
 voice_speaker = voice_list['ささやき']
 prefix = os.getenv('DISCORD_BOT_PREFIX', default='🦑')
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -265,11 +265,13 @@ async def on_command_error(ctx, error):
 @client.command()
 async def ヘルプ(ctx):
     message = f'''◆◇◆{client.user.name}の使い方◆◇◆
-{prefix}接続：ボイスチャンネルに接続します。
-{prefix}切断：ボイスチャンネルから切断します。
+{prefix}s：ボイスチャンネルに接続します。
+{prefix}dc：ボイスチャンネルから切断します。
 {prefix}辞書確認：辞書に登録されている単語を確認します。
 {prefix}辞書追加 単語 よみがな：辞書に[単語]を[よみがな]として追加します。
-{prefix}辞書削除 単語：辞書から[単語]のよみがなを削除します。'''
+{prefix}辞書削除 単語：辞書から[単語]のよみがなを削除します。
+{prefix}mode mode名：モードを変更します。モードの種類はこちら↓
+元気：四国めたん、九州そら：九州そら（ノーマル）、ずんだもん：ずんだもん、モチノキョウコ：モチノ・キョウコ、ささやき：九州そら（ささやき）'''
     await ctx.send(message)
 
 client.run(token)
