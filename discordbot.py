@@ -9,7 +9,7 @@ import json
 import psycopg2
 
 tc = {}
-voice_list = {'元気': 2, 'ささやき': 19, 'セクシー': 17}
+voice_list = {'元気': 2, 'ささやき': 19, 'セクシー': 17, 'ずんだもん': 3, '雨晴はう': 10, 'モチノキョウコ': 20}
 voice_speaker = voice_list['ささやき']
 prefix = os.getenv('DISCORD_BOT_PREFIX', default='🦑')
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -250,7 +250,7 @@ async def on_voice_state_update(member, before, after):
     elif before.channel != after.channel:
         if member.guild.voice_client:
             if member.guild.voice_client.channel is before.channel:
-                if len(member.guild.voice_client.channel.members) == 1 or member.voice.self_mute:
+                if len(member.guild.voice_client.channel.members) == 1:
                     await asyncio.sleep(0.5)
                     await member.guild.voice_client.disconnect()
                     await asyncio.sleep(0.5)
