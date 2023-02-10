@@ -11,11 +11,17 @@ import psycopg2
 tc = {}
 voice_list = {'元気': 2, 'ささやき': 19, '九州そら': 17, 'ずんだもん': 3, '雨晴はう': 10, 'モチノキョウコ': 20}
 voice_speaker = voice_list['ささやき']
-prefix = os.getenv('DISCORD_BOT_PREFIX', default='🦑')
+prefix = os.getenv('DISCORD_BOT_PREFIX', default='?')
 token = os.environ['DISCORD_BOT_TOKEN']
+
 voicevox_key = os.environ['VOICEVOX_KEY']
+
 voicevox_speaker = os.getenv('VOICEVOX_SPEAKER', default='2')
-client = commands.Bot(command_prefix=prefix)
+
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+client = commands.Bot(command_prefix=prefix, intents=intents)
 with open('emoji_ja.json', encoding='utf-8') as file:
     emoji_dataset = json.load(file)
 database_url = os.environ.get('DATABASE_URL')
