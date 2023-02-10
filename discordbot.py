@@ -13,9 +13,7 @@ voice_list = {'元気': 2, 'ささやき': 19, '九州そら': 17, 'ずんだも
 voice_speaker = voice_list['ささやき']
 prefix = os.getenv('DISCORD_BOT_PREFIX', default='?')
 token = os.environ['DISCORD_BOT_TOKEN']
-
 voicevox_key = os.environ['VOICEVOX_KEY']
-
 voicevox_speaker = os.getenv('VOICEVOX_SPEAKER', default='2')
 
 intents = discord.Intents.default()
@@ -143,16 +141,16 @@ async def on_message(message):
                     text = text
 
                     # Replace dictionary
-                    with psycopg2.connect(database_url) as conn:
-                        with conn.cursor() as cur:
-                            sql = 'SELECT * FROM dictionary WHERE guildId = %s'
-                            value = (message.guild.id, )
-                            cur.execute(sql, value)
-                            rows = cur.fetchall()
-                            for row in rows:
-                                word = row[1]
-                                kana = row[2]
-                                text = text.replace(word, kana)
+                    # with psycopg2.connect(database_url) as conn:
+                    #     with conn.cursor() as cur:
+                    #         sql = 'SELECT * FROM dictionary WHERE guildId = %s'
+                    #         value = (message.guild.id, )
+                    #         cur.execute(sql, value)
+                    #         rows = cur.fetchall()
+                    #         for row in rows:
+                    #             word = row[1]
+                    #             kana = row[2]
+                    #             text = text.replace(word, kana)
 
                     # Replace new line
                     text = text.replace('\n', '、')
@@ -176,9 +174,9 @@ async def on_message(message):
                     # Replace Unicode emoji
                     text = re.sub(r'[\U0000FE00-\U0000FE0F]', '', text)
                     text = re.sub(r'[\U0001F3FB-\U0001F3FF]', '', text)
-                    for char in text:
-                        if char in emoji.UNICODE_EMOJI['en'] and char in emoji_dataset:
-                            text = text.replace(char, emoji_dataset[char]['short_name'])
+                    # for char in text:
+                    #     if char in emoji.UNICODE_EMOJI['en'] and char in emoji_dataset:
+                    #         text = text.replace(char, emoji_dataset[char]['short_name'])
 
                     # Replace Discord emoji
                     pattern = r'<:([a-zA-Z0-9_]+):\d+>'
